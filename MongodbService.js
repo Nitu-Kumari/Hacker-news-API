@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 const dbName = "hacker";
-const url = "mongodb://Nitu:Delhi123@ds213645.mlab.com:13645/hacker";
+const url = "mongodb://nitu:Delhi123@ds213645.mlab.com:13645/hacker";
 
 class MongodbService {
   async init() {
