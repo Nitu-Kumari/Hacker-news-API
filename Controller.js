@@ -1,58 +1,42 @@
-const registrations=[
-    {
+const fetch = require("node-fetch");
+const MongodbService = require("./MongodbService");
 
-     "username":" Hacker News",
+class Controller {
+  static async login(req, res) {
+    const data = req.body;
+    const mongodbService = new MongodbService();
+    await mongodbService.init();
+    const user = await mongodbService.login(data);
+    res.json(user);
+  }
 
-     "email":"nituk650@gmail.com",
-     
-     "password":"india"
-     
+  static async registration(req, res) {
+    const data = req.body;
+    const mongodbService = new MongodbService();
+    await mongodbService.init();
+    const user = await mongodbService.registration(data);
+    res.json(user);
+  }
+
+  static async getUser(req, res) {
+    const username = req.params.username;
+    const mongodbService = new MongodbService();
+    await mongodbService.init();
+    const user = await mongodbService.getUser(username);
+    res.json(user);
+  }
+
+  static async search(req, res) {
+    const query = req.query;
+    const keys = Object.keys(query);
+    const queryString = keys.reduce((acc, key)=>{
+        return acc += `${key}=${query[key]}&`
+    },'');
+    const url = `https://hn.algolia.com/api/v1/search?${queryString}`;
     
-    },
-
-    
-       
-
-       {
-
-        "username":" Hacker News",
-   
-        "email":"nituk650@gmail.com",
-        
-        "password":"india"
-        
-       
-       }
-
-    
-
-];
-
-class Controller{
-static addLogin(req,res){
-    const login=req.body;
-    login._id=Date.now();
-    logins.push(login);
-     res.json(login);
- }
-
- static addRegistration(req,res){
-    const registration=req.body;
-    registration._id=Date.now();
-    registrations.push(registration);
-     res.json(registration);
- }
-
-
-
+    const body = await fetch(url);
+    const result = await body.json();
+    res.json(result);
+  }
 }
-module.exports= Controller;
-
-
-
-
-
-
-
-
-  
+module.exports = Controller;
