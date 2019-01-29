@@ -15,4 +15,7 @@ app.post("/users", Controller.registration);
 app.get("/users/:username", Controller.getUser);
 app.get("/search", Controller.search);
 
-app.listen(5000, () => console.log("sever started at 5000"));
+app.listen(process.env.PORT || 5000, () => console.log("sever started at 5000"));
+
+
+
